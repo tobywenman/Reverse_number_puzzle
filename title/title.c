@@ -62,7 +62,21 @@ void initTitleGen(char* fileName)
     }
 }
 
+void destroyTitleGen()
+{
+    for (size_t letter=0; letter<ALPHABET_SIZE; letter++)
+    {
+        for (size_t i=0; i<CHAR_HEIGHT; i++)
+        {
+                free(letters[letter][i]);
+        }
+        free(letters[letter]);
+    }
+    free(letters);
+}
+
 int main()
 {
     initTitleGen("alphabet.txt");
+    destroyTitleGen();
 }
