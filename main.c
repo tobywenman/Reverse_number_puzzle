@@ -149,7 +149,7 @@ bool check(struct num forward, struct num backward, size_t len)
 
 int main()
 {
-    size_t size = 8;
+    size_t size = 10;
     unsigned base = 10;
     unsigned mult = 4;
     struct params vals;
