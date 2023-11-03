@@ -8,15 +8,19 @@
 #define CHAR_WIDTH 12
 #define CHAR_HEIGHT 6
 
-char **letters;
+char ***letters;
 
 void initTitleGen(char* fileName)
 {
-    letters = (char**)malloc(sizeof(char**)*ALPHABET_SIZE);
+    letters = (char***)malloc(sizeof(char***)*ALPHABET_SIZE);
 
     for (size_t i=0; i<ALPHABET_SIZE; i++)
     {
-        letters[i] = malloc(sizeof(char)*CHAR_WIDTH*CHAR_HEIGHT);
+        letters[i] = (char**)malloc(sizeof(char**)*CHAR_HEIGHT);
+        for (size_t j=0; j<CHAR_HEIGHT; j++)
+        {
+            letters[i][j] = (char*)malloc(sizeof(char)*CHAR_WIDTH);
+        }
     }
 
     FILE *fp;
@@ -42,18 +46,19 @@ void initTitleGen(char* fileName)
 
                 if(endLine)
                 {
-                    letters[letter][i*CHAR_WIDTH + j] = ' ';
+                    letters[letter][i][j] = ' ';
                 }
                 else
                 {
-                    letters[letter][i*CHAR_WIDTH + j] = nextChar;
+                    letters[letter][i][j] = nextChar;
                 }
             }
-            letters[letter][i*CHAR_WIDTH + CHAR_WIDTH-1] = '\n';
+            letters[letter][i][CHAR_WIDTH-1] = '\0';
         }
-        letters[letter][CHAR_HEIGHT*CHAR_WIDTH-1] = '\0';
-
-        printf("letter:\n %s\n",letters[letter]);
+        for (unsigned i=0; i<CHAR_HEIGHT; i++)
+        {
+            printf("%s\n",letters[letter][i]);
+        }
     }
 }
 
