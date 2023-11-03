@@ -39,7 +39,7 @@ struct params calcMultValues(size_t size, unsigned base)
 {
     struct params out;
 
-    out.maxVal = ipow(base,size)-1;
+    out.maxVal = ipow(base,size);
 
     out.numDigits = size;
 
@@ -84,7 +84,7 @@ char intToAscii(unsigned in)
 
 void intToString(struct params param, uint64_t data, struct num* out, bool forwards)
 {
-    if (data > param.maxVal)
+    if (data >= param.maxVal)
     {
         out->valid = false;
         return;
@@ -148,7 +148,7 @@ bool check(struct num forward, struct num backward, size_t len)
 
 int main()
 {
-    size_t size = 10;
+    size_t size = 6;
     unsigned base = 10;
     unsigned mult = 4;
     struct params vals;
@@ -161,7 +161,7 @@ int main()
     allocNum(&forward, vals);
     allocNum(&backward, vals);
 
-    for (unsigned i=0; i<vals.maxVal+1; i++)
+    for (unsigned i=0; i<vals.maxVal/mult; i++)
     {
         intToString(vals, i, &forward, true);
         intToString(vals, i*mult, &backward, false);
