@@ -149,7 +149,7 @@ bool check(struct num forward, struct num backward, size_t len)
 
 int main()
 {
-    size_t size = 10;
+    size_t size = 8;
     unsigned base = 10;
     unsigned mult = 4;
     struct params vals;
@@ -162,9 +162,11 @@ int main()
     allocNum(&forward, vals);
     allocNum(&backward, vals);
 
-    clock_t t;
+    clock_t prog;
+    clock_t perf;
 
-    t=clock();
+    prog=clock();
+    perf=clock();
 
     unsigned updateRateMilis = 100;
 
@@ -178,13 +180,21 @@ int main()
             printf("\rValue found: %s\n", forward.data);
         }
 
-        if ((clock() - t)/(CLOCKS_PER_SEC/1000) > updateRateMilis)
+        if ((clock() - prog)/(CLOCKS_PER_SEC/1000) > updateRateMilis)
         {
             printf("\rIn progress: %lu%%", (100*i)/(vals.maxVal/mult));
             fflush(stdout);
-            t=clock();
+            prog=clock();
         }
     }
+
+    perf = clock()-perf;
+
+    double timeTaken = ((double)perf)/CLOCKS_PER_SEC;
+    double checkRate = ((double)vals.maxVal/mult)/timeTaken/1000000;
+
+    printf("\nTook %f seconds to execute.\n",timeTaken);
+    printf("That's %f megachecks per second.\n",checkRate);
 
     return 0;
 }
