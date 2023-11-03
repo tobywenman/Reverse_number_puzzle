@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
 
 int ceil_log2(unsigned x)
 {
@@ -148,7 +149,7 @@ bool check(struct num forward, struct num backward, size_t len)
 
 int main()
 {
-    size_t size = 6;
+    size_t size = 10;
     unsigned base = 10;
     unsigned mult = 4;
     struct params vals;
@@ -161,14 +162,27 @@ int main()
     allocNum(&forward, vals);
     allocNum(&backward, vals);
 
-    for (unsigned i=0; i<vals.maxVal/mult; i++)
+    clock_t t;
+
+    t=clock();
+
+    unsigned updateRateMilis = 100;
+
+    for (uint64_t i=0; i<vals.maxVal/mult; i++)
     {
         intToString(vals, i, &forward, true);
         intToString(vals, i*mult, &backward, false);
 
         if (check(forward,backward,size))
         {
-            printf(">>>>>>value found: %s\n", forward.data);
+            printf("\rValue found: %s\n", forward.data);
+        }
+
+        if ((clock() - t)/(CLOCKS_PER_SEC/1000) > updateRateMilis)
+        {
+            printf("\rIn progress: %lu%%", (100*i)/(vals.maxVal/mult));
+            fflush(stdout);
+            t=clock();
         }
     }
 
