@@ -52,5 +52,12 @@ void initTitleGen(char* fileName)
             letters[letter][i*CHAR_WIDTH + CHAR_WIDTH-1] = '\n';
         }
         letters[letter][CHAR_HEIGHT*CHAR_WIDTH-1] = '\0';
+
+        printf("letter:\n %s\n",letters[letter]);
     }
+}
+
+int main()
+{
+    initTitleGen("alphabet.txt");
 }
