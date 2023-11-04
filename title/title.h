@@ -1,4 +1,4 @@
-char* printTitle(char* in);
+void printTitle(char* in);
 
 void initTitleGen(char* fileName);
 

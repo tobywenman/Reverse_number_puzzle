@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 
 #define ALPHABET_SIZE 35
 #define CHAR_WIDTH 12
@@ -55,10 +56,6 @@ void initTitleGen(char* fileName)
             }
             letters[letter][i][CHAR_WIDTH-1] = '\0';
         }
-        for (unsigned i=0; i<CHAR_HEIGHT; i++)
-        {
-            printf("%s\n",letters[letter][i]);
-        }
     }
 }
 
@@ -75,8 +72,60 @@ void destroyTitleGen()
     free(letters);
 }
 
+size_t charToIdx(char in)
+{
+    if (in >= 97 && in <= 122)
+    {
+        return ((size_t)in)-97;
+    }
+    else
+    {
+        switch (in)
+        {
+        case '?': return 26;
+        case '.': return 27;
+        case '!': return 28;
+        case '_': return 29;
+        case '-': return 30;
+        case '<': return 31;
+        case '>': return 32;
+        case ':': return 33;
+        case ',': return 34;
+        default:  return 35;
+        }
+    }
+}
+
+void printTitle(char* in)
+{
+    size_t len = strlen(in);
+    for(unsigned row=0; row<CHAR_HEIGHT; row++)
+    {
+        for(unsigned i=0; i<len; i++)
+        {
+            size_t idx = charToIdx(in[i]);
+
+            if (idx == 35)
+            {
+                for(unsigned j=0; j<CHAR_WIDTH; j++)
+                {
+                    printf(" ");
+                }
+            }
+            else
+            {
+                printf("%s",letters[idx][row]);
+            }
+        }
+        printf("\n");
+    }
+}
+
 int main()
 {
     initTitleGen("alphabet.txt");
+
+    printTitle("hello world!");
+
     destroyTitleGen();
 }
